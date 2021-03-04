@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reservas CTG{% endblock %}
+{% block css %}
+    {{ parent() }}
+    <style>
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url("{{ asset("img/bruce_wallpaper.jpg") }}");
+            background-size: cover;
+        }
+
+        .form-container form {
+            padding: 3em;
+            min-width: 40vw;
+            border-radius: 15px;
+            background: rgba(255,255,255,.95);
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="form-container">
+        <form class="col s12 z-depth-3">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="first_name" type="text" class="validate">
+                    <label for="first_name">Nombre</label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="last_name" type="text" class="validate">
+                    <label for="last_name">Apellidos</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="phone" type="text" class="validate">
+                    <label for="phone">Teléfono</label>
+                    <span class="helper-text" data-error="wrong" data-success="right">Sólo se usará para comunicar casos de COVID19</span>
+                </div>
+            </div>
+            <div class="right-align">
+                <button class="btn waves-effect waves-light" type="submit" name="action">Resevar
+                    <i class="material-icons right">alarm_on</i>
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
