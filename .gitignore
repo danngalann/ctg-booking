@@ -175,3 +175,7 @@ fabric.properties
 /web/js/
 
 # End of https://www.toptal.com/developers/gitignore/api/phpstorm,symfony
+
+# Personal
+UserFixtures.php
+.php_cs.cache
