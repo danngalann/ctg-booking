@@ -96,7 +96,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('')); // TODO: Redirect somewhere
+        return new RedirectResponse($this->urlGenerator->generate('backend_home')); // TODO: Redirect somewhere
     }
 
     protected function getLoginUrl()
