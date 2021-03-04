@@ -179,3 +179,4 @@ fabric.properties
 # Personal
 UserFixtures.php
 .php_cs.cache
+.idea
