@@ -14,27 +14,41 @@
         }
 
         .form-container form {
-            padding: 3em;
-            min-width: 40vw;
+            padding: 1em;            
+            width: 100%;
+            margin: 0 2em;
             border-radius: 15px;
             background: rgba(255,255,255,.95);
+        }
+
+        {# Desktop #}
+        @media only screen and (min-width: 992px) {
+            .form-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .form-container form {
+                padding: 3em;            
+                min-width: 40vw;
+                width: auto;
+            }
         }
     </style>
 {% endblock %}
 {% block body %}
     <div class="form-container">
-        <form class="col s12 z-depth-3">
+        <form class="z-depth-3">
             <div class="row">
-                <div class="input-field col s6">
+                <div class="input-field col s12 l6">
                     <input id="first_name" type="text" class="validate">
                     <label for="first_name">Nombre</label>
                 </div>
-                <div class="input-field col s6">
+                <div class="input-field col s12 l6">
                     <input id="last_name" type="text" class="validate">
                     <label for="last_name">Apellidos</label>
                 </div>
-            </div>
-            <div class="row">
                 <div class="input-field col s12">
                     <input id="phone" type="text" class="validate">
                     <label for="phone">Teléfono</label>
