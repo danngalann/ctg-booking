@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\BookingRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -49,9 +50,37 @@ class Booking
      */
     private $clients;
 
-    public function __construct()
+    public function __construct(
+        string $name,
+        DateTimeInterface $date,
+        DateTimeInterface $startTime,
+        DateTimeInterface $endTime,
+        ?int $maxClients
+    )
     {
+        $this->name = $name;
+        $this->date = $date;
+        $this->startTime = $startTime;
+        $this->endTime = $endTime;
+        $this->maxClients = $maxClients;
+
         $this->clients = new ArrayCollection();
+    }
+
+    public static function create(
+        string $name,
+        DateTimeInterface $date,
+        DateTimeInterface $startTime,
+        DateTimeInterface $endTime,
+        int $maxClients = null
+    ) {
+      return new self (
+          $name,
+          $date,
+          $startTime,
+          $endTime,
+          $maxClients
+      );
     }
 
     public function getId(): ?int

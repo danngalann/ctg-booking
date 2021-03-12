@@ -1,0 +1,15 @@
+<ul class="collapsible">
+    {% for booking in bookings %}
+    <li>
+        <div class="collapsible-header">{{ booking.name }}</div>
+        <div class="collapsible-body">
+            {%
+                include 'backend_home/includes/_booking_table.html.twig' with
+                {
+                    "clients": booking.clients
+                }
+            %}
+        </div>
+    </li>
+    {% endfor %}
+</ul>

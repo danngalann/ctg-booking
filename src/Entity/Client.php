@@ -49,10 +49,34 @@ class Client
      */
     private $bookings;
 
-    public function __construct()
+    public function __construct(
+        string $name,
+        string $surname,
+        string $phone,
+        ?string $cookie
+    )
     {
+        $this->name = $name;
+        $this->surname = $surname;
+        $this->phone = $phone;
+        $this->cookie = $cookie;
+
         $this->infections = new ArrayCollection();
         $this->bookings = new ArrayCollection();
+    }
+
+    public static function create(
+        string $name,
+        string $surname,
+        string $phone,
+        string $cookie = null
+    ) {
+        return new self(
+            $name,
+            $surname,
+            $phone,
+            $cookie
+        );
     }
 
     public function getId(): ?int

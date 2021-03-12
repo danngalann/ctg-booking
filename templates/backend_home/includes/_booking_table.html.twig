@@ -1,0 +1,17 @@
+<table>
+    <thead>
+    <tr>
+        <th>Nombre</th>
+        <th>Apellidos</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for client in clients %}
+        <tr>
+            <td>{{ client.name }}</td>
+            <td>{{ client.surname }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
