@@ -40,12 +40,12 @@ class Client
     private $cookie;
 
     /**
-     * @ORM\OneToMany(targetEntity=Infection::class, mappedBy="client", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Infection::class, mappedBy="client")
      */
     private $infections;
 
     /**
-     * @ORM\OneToMany(targetEntity=Booking::class, mappedBy="client")
+     * @ORM\ManyToMany(targetEntity=Booking::class, inversedBy="clients")
      */
     private $bookings;
 
@@ -150,7 +150,6 @@ class Client
     {
         if (!$this->bookings->contains($booking)) {
             $this->bookings[] = $booking;
-            $booking->setClient($this);
         }
 
         return $this;
@@ -158,12 +157,7 @@ class Client
 
     public function removeBooking(Booking $booking): self
     {
-        if ($this->bookings->removeElement($booking)) {
-            // set the owning side to null (unless already changed)
-            if ($booking->getClient() === $this) {
-                $booking->setClient(null);
-            }
-        }
+        $this->bookings->removeElement($booking);
 
         return $this;
     }

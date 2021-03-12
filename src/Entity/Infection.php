@@ -18,31 +18,19 @@ class Infection
     private $id;
 
     /**
-     * @ORM\Column(type="date")
-     */
-    private $diagnosedOn;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="infections")
      * @ORM\JoinColumn(nullable=false)
      */
     private $client;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $diagnosedOn;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getDiagnosedOn(): ?\DateTimeInterface
-    {
-        return $this->diagnosedOn;
-    }
-
-    public function setDiagnosedOn(\DateTimeInterface $diagnosedOn): self
-    {
-        $this->diagnosedOn = $diagnosedOn;
-
-        return $this;
     }
 
     public function getClient(): ?Client
@@ -53,6 +41,18 @@ class Infection
     public function setClient(?Client $client): self
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getDiagnosedOn(): ?\DateTimeInterface
+    {
+        return $this->diagnosedOn;
+    }
+
+    public function setDiagnosedOn(\DateTimeInterface $diagnosedOn): self
+    {
+        $this->diagnosedOn = $diagnosedOn;
 
         return $this;
     }
