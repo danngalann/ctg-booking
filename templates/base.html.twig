@@ -7,6 +7,14 @@
         {% block css %}
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+            <style>
+                .user-view .background img {
+                    background-size: cover;
+                    max-width: 300px;
+                    filter: brightness(.5);
+                }
+            </style>
         {% endblock %}
 
         {% block headerscripts %}
@@ -14,10 +22,17 @@
         {% endblock %}
     </head>
     <body>
+        {% include 'includes/_sidenav.html.twig' %}
         {% block body %}{% endblock %}
         {% block bodyscripts %}
             <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            <script>
+                // Init sidebar
+                $(document).ready(function(){
+                    $('.sidenav').sidenav();
+                });
+            </script>
         {% endblock %}
     </body>
 </html>

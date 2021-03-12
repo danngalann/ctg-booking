@@ -1,13 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container">
-        {%
-            include 'backend_home/includes/_booking_collapsible.html.twig' with
-            {
-                "bookings": bookings
-            }
-        %}
+    <div class="row">
+        <div class="col s12 m6 offset-m3">
+            {%
+                include 'backend_home/includes/_booking_collapsible.html.twig' with
+                {
+                    "bookings": bookings
+                }
+            %}
+        </div>
     </div>
 {% endblock %}
 {% block bodyscripts %}
