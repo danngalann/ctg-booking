@@ -1,8 +1,17 @@
 {% extends 'base.html.twig' %}
-
+{% block css %}
+    {{ parent() }}
+    <style>
+        .collapsible-header .client-number {
+            position: absolute;
+            right: 3%;
+        }
+    </style>
+{% endblock %}
 {% block body %}
     <div class="row">
         <div class="col s12 m6 offset-m3">
+            <h3 class="center-align">Reservas para hoy</h3>
             {%
                 include 'backend_home/includes/_booking_collapsible.html.twig' with
                 {

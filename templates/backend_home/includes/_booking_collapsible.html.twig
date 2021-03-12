@@ -1,7 +1,15 @@
-<ul class="collapsible">
+<ul class="collapsible popout" style="position:relative;">
     {% for booking in bookings %}
     <li>
-        <div class="collapsible-header">{{ booking.name }}</div>
+        <div class="collapsible-header">
+            {{ booking.name }}
+            ({{ booking.startTime|date('H:i') }} - {{ booking.endTime|date('H:i') }})
+            <span class="client-number">
+                <sup>{{ booking.clients|length }}</sup>
+                <i class="material-icons">person</i>
+            </span>
+
+        </div>
         <div class="collapsible-body">
             {%
                 include 'backend_home/includes/_booking_table.html.twig' with
