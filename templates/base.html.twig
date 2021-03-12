@@ -22,7 +22,9 @@
         {% endblock %}
     </head>
     <body>
-        {% include 'includes/_sidenav.html.twig' %}
+        {% if is_granted('ROLE_ADMIN') %}
+            {% include 'includes/_sidenav.html.twig' %}
+        {% endif %}
         {% block body %}{% endblock %}
         {% block bodyscripts %}
             <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
