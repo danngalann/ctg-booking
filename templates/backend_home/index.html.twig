@@ -6,6 +6,10 @@
             position: absolute;
             right: 3%;
         }
+
+        .deleteBtn {
+            cursor: pointer;
+        }
     </style>
 {% endblock %}
 {% block body %}
@@ -30,9 +34,34 @@
 {% block bodyscripts %}
     {{ parent() }}
     <script>
-        {# Init collapsible #}
         $(document).ready(function(){
-            $('.collapsible').collapsible();
+            $('.collapsible').collapsible(); // Init collapsible
+
+            $('.deleteClientBookingBtn').click(function () {
+                const clientRow = $(this).closest("tr");
+                const clientId = clientRow.data("client-id");
+                const bookingId = $(this).closest(".collapsible-body").data("booking-id");
+
+                confirmationToast("Seguro que quieres eliminar la reserva?")
+                    .then((res) => {
+                       if(res.isConfirmed) {
+                           $.ajax({
+                               url: '{{ path('delete_booking_client') }}',
+                               type: 'POST',
+                               data: {
+                                   clientId,
+                                   bookingId
+                               }
+                           }).done(function (res) {
+                               $(clientRow).fadeOut(200, () =>{
+                                   $(clientRow).remove();
+                               });
+                           }).fail(function (res) {
+                               errorToast(res.responseJSON.message);
+                           });
+                       }
+                    });
+            });
         });
     </script>
 {% endblock %}

@@ -3,14 +3,16 @@
     <tr>
         <th>Nombre</th>
         <th>Apellidos</th>
+        <th></th>
     </tr>
     </thead>
 
     <tbody>
     {% for client in clients %}
-        <tr>
+        <tr data-client-id="{{ client.id }}">
             <td>{{ client.name }}</td>
             <td>{{ client.surname }}</td>
+            <td><i class="material-icons red-text deleteBtn deleteClientBookingBtn">delete</i></td>
         </tr>
     {% endfor %}
     </tbody>
