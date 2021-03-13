@@ -1,0 +1,26 @@
+<table id="booking-list" class="highlight">
+    <thead>
+    <tr>
+        <th>Nombre</th>
+        <th>Día</th>
+        <th>Hora</th>
+        <th>Apuntados</th>
+        <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for booking in bookings %}
+        <tr data-booking-id="{{ booking.id }}">
+            <td>{{ booking.name }}</td>
+            <td>{{ booking.date|date('d/m/Y') }}</td>
+            <td>{{ booking.startTime|date('H:i') }} - {{ booking.endTime|date('H:i') }}</td>
+            <td>{{ booking.clients|length }}</td>
+            <td>
+                <i class="material-icons blue-text editBtn editBookingBtn" title="Editar">create</i>
+                <i class="material-icons red-text deleteBtn deleteBookingBtn" title="Eliminar">delete</i>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
