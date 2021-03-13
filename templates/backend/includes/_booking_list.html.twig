@@ -15,7 +15,12 @@
             <td>{{ booking.name }}</td>
             <td>{{ booking.date|date('d/m/Y') }}</td>
             <td>{{ booking.startTime|date('H:i') }} - {{ booking.endTime|date('H:i') }}</td>
-            <td>{{ booking.clients|length }}</td>
+            <td>
+                {{ booking.clients|length }}
+                {% if booking.maxClients %}
+                    / {{ booking.maxClients }}
+                {% endif %}
+            </td>
             <td>
                 <i class="material-icons blue-text editBtn editBookingBtn" title="Editar">create</i>
                 <i class="material-icons red-text deleteBtn deleteBookingBtn" title="Eliminar">delete</i>
