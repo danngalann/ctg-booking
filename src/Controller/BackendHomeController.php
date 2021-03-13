@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Booking;
 use DateTime;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +25,7 @@ class BackendHomeController extends AbstractController
      */
     public function index(): Response
     {
-        $bookings = $this->em->getRepository(Booking::class)->findAll();
+        $bookings = $this->em->getRepository(Booking::class)->nextFromToday();
         $todayBookings = $this->getFromToday($bookings);
 
         return $this->render('backend/index.html.twig',[
