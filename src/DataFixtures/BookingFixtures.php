@@ -4,6 +4,8 @@ namespace App\DataFixtures;
 
 use App\Entity\Booking;
 use App\Entity\Client;
+use DateInterval;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -11,6 +13,12 @@ class BookingFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
+        $today = new DateTime();
+        
+        $tomorrow = new DateTime();
+        $interval = new DateInterval('P1D');
+        $tomorrow->add($interval);
+
         $clients = [
             Client::create("Manolo", "Federico Fernandez", "659856535"),
             Client::create("Miguel", "Fernandez Rodriguez", "659858535"),
@@ -22,9 +30,12 @@ class BookingFixtures extends Fixture
         ];
 
         $bookings = [
-            Booking::create("Tercera", new \DateTime(), new \DateTime(), new \DateTime()),
-            Booking::create("Cuarta", new \DateTime(), new \DateTime(), new \DateTime()),
-            Booking::create("Quinta", new \DateTime(), new \DateTime(), new \DateTime()),
+            Booking::create("Tercera", $today, $today, $today),
+            Booking::create("Cuarta", $today, $today, $today),
+            Booking::create("Quinta", $today, $today, $today),
+            Booking::create("Tercera", $tomorrow, $tomorrow, $tomorrow),
+            Booking::create("Cuarta", $tomorrow, $tomorrow, $tomorrow),
+            Booking::create("Quinta", $tomorrow, $tomorrow, $tomorrow),
         ];
 
         /** @var Booking $booking */
