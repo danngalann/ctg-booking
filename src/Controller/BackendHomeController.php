@@ -29,7 +29,7 @@ class BackendHomeController extends AbstractController
         $bookings = $this->em->getRepository(Booking::class)->findAll();
         $todayBookings = $this->getFromToday($bookings);
 
-        return $this->render('backend_home/index.html.twig',[
+        return $this->render('backend/index.html.twig',[
             "bookings" => $bookings,
             "todayBookings" => $todayBookings
         ]);

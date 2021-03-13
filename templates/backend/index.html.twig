@@ -22,7 +22,7 @@
             <h3 class="center-align">Reservas para hoy</h3>
             {% if todayBookings|length > 0 %}
             {%
-                include 'backend_home/includes/_booking_collapsible.html.twig' with
+                include 'backend/includes/_booking_collapsible.html.twig' with
                 {
                     "bookings": todayBookings
                 }
@@ -32,7 +32,7 @@
             {% endif %}
             <h3 class="center-align">Próximas reservas</h3>
             {%
-                include 'backend_home/includes/_booking_list.html.twig' with
+                include 'backend/includes/_booking_list.html.twig' with
                 {
                     "bookings": bookings
                 }
