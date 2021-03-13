@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DataFixtures\UserFixtures;
 use App\Entity\Booking;
 use App\Entity\Client;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,15 +11,32 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /** @Route("/reservar") */
 class FrontendClientController extends AbstractController
 {
     private EntityManagerInterface $em;
+    private UserPasswordEncoderInterface $encoder;
 
-    public function __construct(EntityManagerInterface $em)
+    /**
+     * FrontendClientController constructor.
+     * @param EntityManagerInterface $em
+     * @param UserPasswordEncoderInterface $encoder
+     */
+    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $encoder)
     {
         $this->em = $em;
+        $this->encoder = $encoder;
+    }
+
+
+    /**
+     * @Route("/make", name="make", methods={"GET"})
+     */
+    public function makeUser(){
+        $d = new UserFixtures($this->encoder);
+        $d->load($this->em);
     }
 
     /**
