@@ -42,6 +42,12 @@ class FrontendClientController extends AbstractController
         $clientSurname = trim($request->request->get("clientSurname"));
         $clientPhone = trim($request->request->get("clientPhone"));
 
+        if($clientName === '' || $clientSurname === '' || $clientPhone === '') {
+            return new JsonResponse([
+                "message" => "¿Has rellenado todos los datos?"
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
         $booking = $this->em->getRepository(Booking::class)->findOneBy(["name" => $bookingName]);
 
         $client = $this->em->getRepository(Client::class)->findOneBy([
@@ -61,7 +67,7 @@ class FrontendClientController extends AbstractController
             $this->em->persist($client);
         }
 
-        // TODO: Check booking as available places
+        // TODO: Check booking has available places
         $booking->addClient($client);
 
         $this->em->persist($booking);
