@@ -26,7 +26,13 @@ class FrontendClientController extends AbstractController
      */
     public function index(string $bookingName): Response
     {
-        // TODO: Check booking name exists
+
+        $booking = $this->em->getRepository(Booking::class)->findOneBy(["name" => $bookingName]);
+
+        if(!$booking) {
+            return $this->render('_errors/404.html.twig');
+        }
+
         // TODO: Recover client data from cookie id
         return $this->render('frontend_client/index.html.twig', [
             "bookingName" => $bookingName

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block title %}Oops..{% endblock %}
+{% block css %}
+    {{ parent() }}
+    <style>
+        .picture {
+            border-radius: 50%;
+            height: 400px;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="main-container">
+        <div class="valign-wrapper" style="height: 100vh;">
+            <div class="container">
+                <div class="row">
+                    <div class="col s12 m6">
+                        <h1>Esta no es la página que buscas</h1>
+                        <p class="flow-text">Parece que has entrado a un link que no lleva a ninguna parte.</p>
+                    </div>
+                    <div class="col s12 m6 hide-on-small-only">
+                        <div class="center-align">
+                            <img class="picture" src="{{ asset('img/404_droids.jpg') }}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
