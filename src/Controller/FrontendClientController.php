@@ -24,7 +24,7 @@ class FrontendClientController extends AbstractController
     /**
      * @Route("/{bookingName}", name="frontend_client", methods={"GET"})
      */
-    public function index(string $bookingName): Response
+    public function booking(string $bookingName): Response
     {
 
         $booking = $this->em->getRepository(Booking::class)->findOneBy(["name" => $bookingName]);
@@ -34,7 +34,7 @@ class FrontendClientController extends AbstractController
         }
 
         // TODO: Recover client data from cookie id
-        return $this->render('frontend/index.html.twig', [
+        return $this->render('frontend/booking.html.twig', [
             "bookingName" => $bookingName
         ]);
     }
