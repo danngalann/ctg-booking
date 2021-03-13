@@ -40,6 +40,8 @@
             $('.deleteClientBookingBtn').click(function () {
                 const clientRow = $(this).closest("tr");
                 const clientId = clientRow.data("client-id");
+
+                const bookingHeaderRow = $(this).closest(".collapsible-body").siblings(".collapsible-header");
                 const bookingId = $(this).closest(".collapsible-body").data("booking-id");
 
                 confirmationToast("Seguro que quieres eliminar la reserva?")
@@ -56,6 +58,7 @@
                                $(clientRow).fadeOut(200, () =>{
                                    $(clientRow).remove();
                                });
+                               removeClientCount(bookingHeaderRow);
                            }).fail(function (res) {
                                errorToast(res.responseJSON.message);
                            });
@@ -63,5 +66,13 @@
                     });
             });
         });
+    </script>
+    <script>
+        function removeClientCount(row){
+            const clientCountElement = $(row).find(".client-number sup");
+            const clientCount = parseInt(clientCountElement.text()) - 1;
+            console.log(clientCountElement, clientCount);
+            clientCountElement.text(clientCount);
+        }
     </script>
 {% endblock %}
