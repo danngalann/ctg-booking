@@ -15,6 +15,10 @@ class BookingFixtures extends Fixture
             Client::create("Manolo", "Federico Fernandez", "659856535"),
             Client::create("Miguel", "Fernandez Rodriguez", "659858535"),
             Client::create("Paula", "González Gómez", "659846535"),
+            Client::create("Marta", "Federica Gómez", "659846535"),
+            Client::create("Paula", "González Gómez", "659848535"),
+            Client::create("Alfonso", "Pérez Rodríguez", "659846235"),
+            Client::create("Víctor", "Almendros Pérez", "659846535"),
         ];
 
         $bookings = [
