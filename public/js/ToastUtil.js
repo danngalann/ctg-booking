@@ -14,3 +14,11 @@ function confirmationToast(title){
         denyButtonText: `No`,
     });
 }
+
+function successToast(text) {
+    Swal.fire({
+        icon: 'success',
+        text,
+        timer: 2000,
+    })
+}
