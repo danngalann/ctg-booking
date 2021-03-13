@@ -40,23 +40,26 @@
 {% block body %}
     <div class="form-container">
         <form class="z-depth-3" action="javascript:void(0);">
+            {% if isBookingFull %}
+            <h5 class="red-text center-align">No quedan plazas disponibles</h5>
+            {% endif %}
             <div class="row">
                 <div class="input-field col s12 l6">
-                    <input id="first_name" type="text" class="validate">
+                    <input id="first_name" type="text" class="validate" {% if isBookingFull %}disabled{% endif %}>
                     <label for="first_name">Nombre</label>
                 </div>
                 <div class="input-field col s12 l6">
-                    <input id="last_name" type="text" class="validate">
+                    <input id="last_name" type="text" class="validate" {% if isBookingFull %}disabled{% endif %}>
                     <label for="last_name">Apellidos</label>
                 </div>
                 <div class="input-field col s12" style="margin-top: 0;">
-                    <input id="phone" type="text" class="validate">
+                    <input id="phone" type="text" class="validate" {% if isBookingFull %}disabled{% endif %}>
                     <label for="phone">Teléfono</label>
                     <span class="helper-text" data-error="wrong" data-success="right">Sólo se usará para comunicar casos de COVID19</span>
                 </div>
             </div>
             <div class="right-align">
-                <button id="doAction" class="btn waves-effect waves-light" type="submit">Resevar
+                <button id="doAction" class="btn waves-effect waves-light" type="submit" {% if isBookingFull %}disabled{% endif %}>Resevar
                     <i class="material-icons right">alarm_on</i>
                 </button>
             </div>

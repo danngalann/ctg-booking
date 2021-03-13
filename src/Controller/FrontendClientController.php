@@ -27,15 +27,21 @@ class FrontendClientController extends AbstractController
     public function booking(string $bookingName): Response
     {
 
-        $booking = $this->em->getRepository(Booking::class)->findOneBy(["name" => $bookingName]);
+        $booking = $this->em->getRepository(Booking::class)->nextFromToday($bookingName)[0];
+        $isBookingFull = false;
 
         if(!$booking) {
             return $this->render('_errors/404.html.twig');
         }
 
+        if($booking->getMaxClients() && $booking->getClients()->count() === $booking->getMaxClients()) {
+            $isBookingFull = true;
+        }
+
         // TODO: Recover client data from cookie id
         return $this->render('frontend/booking.html.twig', [
-            "bookingName" => $bookingName
+            "bookingName" => $bookingName,
+            "isBookingFull" => $isBookingFull
         ]);
     }
 
@@ -54,6 +60,7 @@ class FrontendClientController extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
 
+        /** @var Booking $booking */
         $booking = $this->em->getRepository(Booking::class)->nextFromToday($bookingName)[0];
 
         $client = $this->em->getRepository(Client::class)->findOneBy([
@@ -73,7 +80,11 @@ class FrontendClientController extends AbstractController
             $this->em->persist($client);
         }
 
-        // TODO: Check booking has available places
+        if($booking->getMaxClients() && count($booking->getClients()) === $booking->getMaxClients()) {
+            return new JsonResponse([
+                "message" => "No quedan plazas disponibles para esta hora :("
+            ], Response::HTTP_BAD_REQUEST);
+        }
         $booking->addClient($client);
 
         $this->em->persist($booking);
