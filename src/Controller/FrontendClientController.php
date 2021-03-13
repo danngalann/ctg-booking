@@ -54,7 +54,7 @@ class FrontendClientController extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $booking = $this->em->getRepository(Booking::class)->findOneBy(["name" => $bookingName]);
+        $booking = $this->em->getRepository(Booking::class)->nextFromToday($bookingName)[0];
 
         $client = $this->em->getRepository(Client::class)->findOneBy([
             "name" => $clientName,

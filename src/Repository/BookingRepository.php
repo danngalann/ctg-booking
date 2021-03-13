@@ -19,6 +19,23 @@ class BookingRepository extends ServiceEntityRepository
         parent::__construct($registry, Booking::class);
     }
 
+    public function nextFromToday($name)
+    {
+        $today = new \DateTime();
+        $today->setTime(0,0,0);
+
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.date >= :today')
+            ->setParameter('today', $today)
+            ->andWhere('b.name = :name')
+            ->setParameter('name', $name)
+            ->orderBy('b.date', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return Booking[] Returns an array of Booking objects
     //  */
