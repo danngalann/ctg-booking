@@ -43,6 +43,7 @@
             {% if isBookingFull %}
             <h5 class="red-text center-align">No quedan plazas disponibles</h5>
             {% endif %}
+            <h5 id="duplicateText" class="red-text center-align" style="display: none">¡Ya tienes una reserva!</h5>
             <div class="row">
                 <div class="input-field col s12 l6">
                     <input id="first_name" type="text" class="validate" {% if isBookingFull %}disabled{% endif %}>
@@ -59,8 +60,11 @@
                 </div>
             </div>
             <div class="right-align">
-                <button id="doAction" class="btn waves-effect waves-light" type="submit" {% if isBookingFull %}disabled{% endif %}>Resevar
+                <button id="doBooking" class="btn waves-effect waves-light" type="submit" {% if isBookingFull %}disabled{% endif %}>Resevar
                     <i class="material-icons right">alarm_on</i>
+                </button>
+                <button id="deleteBooking" class="btn red waves-effect waves-light" type="submit" style="display: none">Eliminar
+                    <i class="material-icons right">delete</i>
                 </button>
             </div>
         </form>
@@ -70,7 +74,36 @@
     {{ parent() }}
     <script>
         $(document).ready(function(){
-            $('#doAction').click(function () {
+            $('input').on('keyup', function () {
+                if(allInputsHaveData()){
+                    const clientName = $('#first_name').val();
+                    const clientSurname = $('#last_name').val();
+                    const clientPhone = $('#phone').val();
+
+                    $.ajax({
+                        url: '{{ path('frontend_check_booking', {"bookingName": bookingName}) }}',
+                        type: 'POST',
+                        data: {
+                            clientName,
+                            clientSurname,
+                            clientPhone
+                        }
+                    }).done(function (isDupe) {
+                        if(isDupe) {
+                            $('#duplicateText').css("display", "block");
+                            $('#doBooking').prop("disabled", true);
+                            $('#deleteBooking').css("display", "inline-block");
+                        } else {
+                            $('#duplicateText').css("display", "none");
+                            $('#doBooking').prop("disabled", false);
+                            $('#deleteBooking').css("display", "none");
+                        }
+                    })
+                }
+            });
+
+            // Submit
+            $('#doBooking').click(function () {
                 const clientName = $('#first_name').val();
                 const clientSurname = $('#last_name').val();
                 const clientPhone = $('#phone').val();
@@ -84,12 +117,53 @@
                         clientPhone
                     }
                 }).done(function (res) {
-                    successToast("Reserva completada");
+                    successToast("Reserva completada").then(() => {
+                        window.location.href = '{{ path('frontend_client', {"bookingName": bookingName}) }}';
+                    });
                 }).fail(function (res) {
                     errorToast(res.responseJSON.message);
                 })
                 ;
             });
+
+            // Delete booking
+            $('#deleteBooking').click(function () {
+                const clientName = $('#first_name').val();
+                const clientSurname = $('#last_name').val();
+                const clientPhone = $('#phone').val();
+
+                confirmationToast("¿Seguro que quieres eliminar la reserva?")
+                    .then((res) => {
+                        if(res.isConfirmed) {
+                            $.ajax({
+                                url: '{{ path('frontend_delete_booking', {"bookingName": bookingName}) }}',
+                                type: 'POST',
+                                data: {
+                                    clientName,
+                                    clientSurname,
+                                    clientPhone
+                                }
+                            }).done(function (res) {
+                                successToast("Reserva eliminada")
+                                    .then(() => {
+                                        window.location.href = '{{ path('frontend_client', {"bookingName": bookingName}) }}';
+                                    });
+                            }).fail(function (res) {
+                                errorToast(res.responseJSON.message);
+                            })
+                            ;
+                        }
+                    });
+            });
         });
+    </script>
+    <script>
+        function allInputsHaveData(){
+            const clientName = $('#first_name').val() !== "";
+            const clientSurname = $('#last_name').val() !== "";
+            const clientPhone = $('#phone').val() !== "";
+
+            return clientName && clientSurname && clientPhone;
+        }
     </script>
 {% endblock %}

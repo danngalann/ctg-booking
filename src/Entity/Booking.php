@@ -188,4 +188,9 @@ class Booking
 
         return $this;
     }
+
+    public function hasClient(Client $client)
+    {
+        return $this->clients->contains($client);
+    }
 }

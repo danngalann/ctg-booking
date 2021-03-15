@@ -100,7 +100,7 @@
                 const bookingRow = $(this).closest("tr");
                 const bookingId = $(bookingRow).data("booking-id");
 
-                confirmationToast("Seguro que quieres eliminar la reserva?")
+                confirmationToast("¿Seguro que quieres eliminar la reserva?")
                     .then((res) => {
                         if(res.isConfirmed) {
                             $.ajax({
