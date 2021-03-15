@@ -11,12 +11,16 @@
 
         </div>
         <div data-booking-id="{{ booking.id }}" class="collapsible-body">
+            {% if booking.clients|length > 0 %}
             {%
                 include 'backend/includes/_booking_client_table.html.twig' with
                 {
                     "clients": booking.clients
                 }
             %}
+            {% else %}
+                <h6 class="red-text center-align">No hay clientes en esta reserva</h6>
+            {% endif %}
         </div>
     </li>
     {% endfor %}

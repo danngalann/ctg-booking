@@ -1,5 +1,5 @@
 function errorToast(text){
-    Swal.fire({
+    return Swal.fire({
         icon: 'error',
         title: 'Oops... Algo ha ido mal',
         text,
@@ -16,9 +16,10 @@ function confirmationToast(title){
 }
 
 function successToast(text) {
-    Swal.fire({
+    return Swal.fire({
         icon: 'success',
+        showConfirmButton: false,
         text,
-        timer: 2000,
+        timer: 1300,
     })
 }

@@ -15,7 +15,7 @@
             <td>{{ booking.name }}</td>
             <td>{{ booking.date|date('d/m/Y') }}</td>
             <td>{{ booking.startTime|date('H:i') }} - {{ booking.endTime|date('H:i') }}</td>
-            <td>
+            <td class="{% if booking.maxClients and booking.clients|length == booking.maxClients%}red-text{% endif %}">
                 {{ booking.clients|length }}
                 {% if booking.maxClients %}
                     / {{ booking.maxClients }}

@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+{% block title %}Reserva{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col s12 m7 offset-m2">
+            <h3 class="center-align">Reserva</h3>
+            <form class="z-depth-3" action="javascript:void(0);" style="padding: 3em;">
+                <div class="row">
+                    <div class="input-field col s12 l6">
+                        <input id="name" type="text" required>
+                        <label for="name">Nombre</label>
+                    </div>
+                    <div class="input-field col s12 l6">
+                        <input id="slots" type="number" class="validate">
+                        <label for="slots">Plazas</label>
+                        <span class="helper-text">Si se deja vacío no se limitarán las plazas</span>
+                    </div>
+                    <div class="input-field col s12" style="margin-top: 0;">
+                        <input id="date" type="text" class="datepicker" required>
+                        <label for="date">Fecha</label>
+                    </div>
+                    <div class="input-field col s12 l6">
+                        <input id="startTime" type="text" class="timepicker" required>
+                        <label for="startTime">Hora inicio</label>
+                    </div>
+                    <div class="input-field col s12 l6">
+                        <input id="endTime" type="text" class="timepicker" required>
+                        <label for="endTime">Hora final</label>
+                    </div>
+                </div>
+                <div class="right-align">
+                    <a href="{{ path('backend_home') }}" class="btn waves-effect waves-light grey">Volver
+                        <i class="material-icons left">arrow_back</i>
+                    </a>
+                    <button id="doAction" class="btn waves-effect waves-light" type="submit">Guardar
+                        <i class="material-icons right">save</i>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="hide-on-small-only col m3 ">
+            {%
+                include 'backend/includes/_stats_sidebar.html.twig'
+            %}
+        </div>
+    </div>
+{% endblock %}
+{% block bodyscripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            $('#doAction').click(function (){
+               const name = $('#name').val();
+               const slots = $('#slots').val();
+               const date = $('#date').val();
+               const startTime = $('#startTime').val();
+               const endTime = $('#endTime').val();
+
+               $.ajax({
+                   url: '{{ path('create_booking') }}',
+                   type: 'POST',
+                   data: {
+                       name,
+                       slots,
+                       date,
+                       startTime,
+                       endTime
+                   }
+               }).done(function (res) {
+                    successToast("Reserva creada con éxito")
+                        .then(() => {
+                           window.location.href = '{{ path('backend_home') }}';
+                        });
+               }).fail(function (res) {
+                    errorToast(res.responseJSON.message);
+               });
+            });
+        });
+    </script>
+{% endblock %}

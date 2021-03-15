@@ -47,6 +47,80 @@
                 $(document).ready(function(){
                     $('.sidenav').sidenav();
                 });
+
+                // Init date and time pickers
+                $(document).ready(function(){
+                    $('.datepicker').datepicker({
+                        disableWeekends: true,
+                        firstDay: 1,
+                        showClearBtn: true,
+                        format: "dd/mm/yyyy",
+                        i18n: {
+                            cancel: "Cancelar",
+                            clear: "Limpiar",
+                            ok: "Aceptar",
+                            months: [
+                                "Enero",
+                                "Febrero",
+                                "Marzo",
+                                "Abril",
+                                "Mayo",
+                                "Junio",
+                                "Julio",
+                                "Agosto",
+                                "Septiembre",
+                                "Octubre",
+                                "Noviembre",
+                                "Diciembre"
+                            ],
+                            monthsShort: [
+                                "Ene",
+                                "Feb",
+                                "Mar",
+                                "Abr",
+                                "May",
+                                "Jun",
+                                "Jul",
+                                "Ago",
+                                "Sep",
+                                "Oct",
+                                "Nov",
+                                "Dec"
+                            ],
+                            weekdays: [
+                                "Lunes",
+                                "Martes",
+                                "Miércoles",
+                                "Jueves",
+                                "Viernes",
+                                "Sábado",
+                                "Domingo"
+                            ],
+                            weekdaysShort: [
+                                "Lun",
+                                "Mar",
+                                "Mie",
+                                "Jue",
+                                "Vie",
+                                "Sab",
+                                "Dom"
+                            ],
+                            weekdaysAbbrev: ['D','L','M','M','J','V','S']
+                        }
+                    });
+                });
+
+                $(document).ready(function(){
+                    $('.timepicker').timepicker({
+                        showClearBtn: true,
+                        twelveHour: false,
+                        i18n: {
+                            cancel: "Cancelar",
+                            clear: "Limpiar",
+                            done: "OK"
+                        }
+                    });
+                });
             </script>
         {% endblock %}
     </body>
