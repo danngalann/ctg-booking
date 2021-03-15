@@ -83,6 +83,20 @@ class Booking
       );
     }
 
+    public function update(
+        string $name,
+        DateTimeInterface $date,
+        DateTimeInterface $startTime,
+        DateTimeInterface $endTime,
+        int $maxClients = null
+    ) {
+        $this->name = $name;
+        $this->date = $date;
+        $this->startTime = $startTime;
+        $this->endTime = $endTime;
+        $this->maxClients = $maxClients;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

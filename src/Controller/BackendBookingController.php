@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Booking;
-use App\Entity\Booking as BookingAlias;
 use App\Entity\Client;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -65,7 +64,60 @@ class BackendBookingController extends AbstractController
 
         return new JsonResponse(null, Response::HTTP_OK);
     }
-    // TODO: Edit booking
+
+    /** @Route("/{bookingId}/edit", name="edit_booking", methods={"GET"}) */
+    public function edit(string $bookingId): Response
+    {
+        $booking = $this->em->getRepository(Booking::class)->find($bookingId);
+        return $this->render('backend/booking/create_edit.html.twig', [
+            "booking" => $booking
+        ]);
+    }
+
+    /** @Route("/{bookingId}/edit", name="update_booking", methods={"POST"}) */
+    public function update(string $bookingId, Request $request): JsonResponse{
+
+        $booking = $this->em->getRepository(Booking::class)->find($bookingId);
+
+        if(!$booking) {
+            return new JsonResponse([
+                "message" => "No se ha encontrado ésa reserva"
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $name = $request->request->get('name');
+        $slots = $request->request->get('slots');
+        $date = $request->request->get('date');
+        $startTime = $request->request->get('startTime');
+        $endTime = $request->request->get('endTime');
+
+        $slots = $slots === "" ? null : (int)$slots;
+
+        try {
+            // Convert string data to DateTime objects
+            $startTime = $this->parseDateTime($date, $startTime);
+            $endTime = $this->parseDateTime($date, $endTime);
+            $date = $this->parseDateTime($date);
+
+            $booking->update(
+                $name,
+                $date,
+                $startTime,
+                $endTime,
+                $slots
+            );
+
+            $this->em->persist($booking);
+            $this->em->flush();
+
+        } catch (Exception $e) {
+            return new JsonResponse([
+                "message" => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        return new JsonResponse(null, Response::HTTP_OK);
+    }
 
     /**
      * @Route("/delete-client", name="delete_booking_client", methods={"POST"})

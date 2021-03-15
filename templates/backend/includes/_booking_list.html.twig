@@ -22,7 +22,7 @@
                 {% endif %}
             </td>
             <td>
-                <i class="material-icons blue-text editBtn editBookingBtn" title="Editar">create</i>
+                <a href="{{ path('edit_booking', { "bookingId":booking.id }) }}"  title="Editar"><i class="material-icons blue-text">create</i></a>
                 <i class="material-icons red-text deleteBtn deleteBookingBtn" title="Eliminar">delete</i>
             </td>
         </tr>

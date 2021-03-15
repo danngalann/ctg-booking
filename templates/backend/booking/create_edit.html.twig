@@ -7,24 +7,24 @@
             <form class="z-depth-3" action="javascript:void(0);" style="padding: 3em;">
                 <div class="row">
                     <div class="input-field col s12 l6">
-                        <input id="name" type="text" required>
+                        <input id="name" type="text" required {% if booking is defined %}value="{{ booking.name }}{% endif %}">
                         <label for="name">Nombre</label>
                     </div>
                     <div class="input-field col s12 l6">
-                        <input id="slots" type="number" class="validate">
+                        <input id="slots" type="number" class="validate" {% if booking is defined and booking.maxClients %}value="{{ booking.maxClients }}"{% endif %}>
                         <label for="slots">Plazas</label>
                         <span class="helper-text">Si se deja vacío no se limitarán las plazas</span>
                     </div>
                     <div class="input-field col s12" style="margin-top: 0;">
-                        <input id="date" type="text" class="datepicker" required>
+                        <input id="date" type="text" class="datepicker" required {% if booking is defined %}value="{{ booking.date|date("d/m/Y") }}{% endif %}">
                         <label for="date">Fecha</label>
                     </div>
                     <div class="input-field col s12 l6">
-                        <input id="startTime" type="text" class="timepicker" required>
+                        <input id="startTime" type="text" class="timepicker" required {% if booking is defined %}value="{{ booking.startTime|date('H:i') }}{% endif %}">
                         <label for="startTime">Hora inicio</label>
                     </div>
                     <div class="input-field col s12 l6">
-                        <input id="endTime" type="text" class="timepicker" required>
+                        <input id="endTime" type="text" class="timepicker" required {% if booking is defined %}value="{{ booking.endTime|date('H:i') }}{% endif %}">
                         <label for="endTime">Hora final</label>
                     </div>
                 </div>
@@ -56,8 +56,14 @@
                const startTime = $('#startTime').val();
                const endTime = $('#endTime').val();
 
+                {% if booking is defined %}
+                const path = '{{ path('update_booking', { "bookingId":booking.id }) }}'
+                {% else %}
+                const path = '{{ path('create_booking') }}'
+                {% endif %}
+
                $.ajax({
-                   url: '{{ path('create_booking') }}',
+                   url: path,
                    type: 'POST',
                    data: {
                        name,
@@ -67,7 +73,7 @@
                        endTime
                    }
                }).done(function (res) {
-                    successToast("Reserva creada con éxito")
+                    successToast("Reserva guardada")
                         .then(() => {
                            window.location.href = '{{ path('backend_home') }}';
                         });
