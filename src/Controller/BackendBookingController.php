@@ -148,7 +148,7 @@ class BackendBookingController extends AbstractController
     {
         try {
             $client = $this->em->getRepository(Client::class)->find($request->request->get("clientId"));
-            $booking = $this->em->getRepository(BookingAlias::class)->find($request->request->get("bookingId"));
+            $booking = $this->em->getRepository(Booking::class)->find($request->request->get("bookingId"));
 
             $booking->removeClient($client);
             $this->em->persist($booking);
