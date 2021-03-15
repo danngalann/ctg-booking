@@ -94,6 +94,31 @@
                        }
                     });
             });
+
+            $('.deleteBookingBtn').click(function () {
+
+                const bookingRow = $(this).closest("tr");
+                const bookingId = $(bookingRow).data("booking-id");
+
+                confirmationToast("Seguro que quieres eliminar la reserva?")
+                    .then((res) => {
+                        if(res.isConfirmed) {
+                            $.ajax({
+                                url: '{{ path('delete_booking') }}',
+                                type: 'POST',
+                                data: {
+                                    bookingId
+                                }
+                            }).done(function (res) {
+                                $(bookingRow).fadeOut(700, () =>{
+                                    $(bookingRow).remove();
+                                });
+                            }).fail(function (res) {
+                                errorToast(res.responseJSON.message);
+                            });
+                        }
+                    });
+            });
         });
     </script>
     <script>

@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/** @Route("/booking") */
+/** @Route("/admin/booking") */
 class BackendBookingController extends AbstractController
 {
     private EntityManagerInterface $em;
@@ -110,6 +110,28 @@ class BackendBookingController extends AbstractController
             $this->em->persist($booking);
             $this->em->flush();
 
+        } catch (Exception $e) {
+            return new JsonResponse([
+                "message" => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        return new JsonResponse(null, Response::HTTP_OK);
+    }
+
+    /** @Route("/delete", name="delete_booking", methods={"POST"}) */
+    public function delete(Request $request){
+        $booking = $this->em->getRepository(Booking::class)->find($request->request->get("bookingId"));
+
+        if(!$booking) {
+            return new JsonResponse([
+                "message" => "No se ha encontrado ésa reserva"
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        try {
+            $this->em->remove($booking);
+            $this->em->flush();
         } catch (Exception $e) {
             return new JsonResponse([
                 "message" => $e->getMessage()
