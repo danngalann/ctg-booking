@@ -27,13 +27,17 @@ class FrontendClientController extends AbstractController
     public function booking(string $bookingName): Response
     {
 
-        $booking = $this->em->getRepository(Booking::class)->nextFromToday($bookingName)[0];
+        $bookings = $this->em->getRepository(Booking::class)->nextFromToday($bookingName);
         $isBookingFull = false;
 
-        if(!$booking) {
-            return $this->render('_errors/404.html.twig');
+        if(!$bookings) {
+            return $this->render('_errors/no_bookings.html.twig',
+            [
+                "bookingName" => $bookingName
+            ]);
         }
 
+        $booking = $bookings[0];
         if($booking->getMaxClients() && $booking->getClients()->count() === $booking->getMaxClients()) {
             $isBookingFull = true;
         }
@@ -41,6 +45,8 @@ class FrontendClientController extends AbstractController
         // TODO: Recover client data from cookie id
         return $this->render('frontend/booking.html.twig', [
             "bookingName" => $bookingName,
+            "bookingDate" => $booking->date,
+            "bookingTime" => $booking->startTime,
             "isBookingFull" => $isBookingFull
         ]);
     }
