@@ -44,9 +44,7 @@ class FrontendClientController extends AbstractController
 
         // TODO: Recover client data from cookie id
         return $this->render('frontend/booking.html.twig', [
-            "bookingName" => $bookingName,
-            "bookingDate" => $booking->date,
-            "bookingTime" => $booking->startTime,
+            "booking" => $booking,
             "isBookingFull" => $isBookingFull
         ]);
     }
