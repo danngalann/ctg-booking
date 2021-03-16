@@ -108,14 +108,18 @@
                     }).done(function (isDupe) {
                         if(isDupe) {
                             $('#duplicateText').css("display", "block");
-                            $('#doBooking').prop("disabled", true);
+                            $('#doBooking').css("display", "none");
                             $('#deleteBooking').css("display", "inline-block");
                         } else {
                             $('#duplicateText').css("display", "none");
-                            $('#doBooking').prop("disabled", false);
+                            $('#doBooking').css("display", "inline-block");
                             $('#deleteBooking').css("display", "none");
                         }
                     })
+                } else {
+                    $('#duplicateText').css("display", "none");
+                    $('#doBooking').css("display", "inline-block");
+                    $('#deleteBooking').css("display", "none");
                 }
             });
 
