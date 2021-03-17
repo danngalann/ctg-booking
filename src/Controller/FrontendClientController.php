@@ -44,9 +44,13 @@ class FrontendClientController extends AbstractController
             $isBookingFull = true;
         }
 
-        $client = $this->em->getRepository(Client::class)->findOneBy([
-            "cookie" => $request->cookies->get("client")
-        ]);
+        $cookie = $request->cookies->get("client");
+        $client = null;
+        if($cookie) {
+            $client = $this->em->getRepository(Client::class)->findOneBy([
+                "cookie" => $request->cookies->get("client")
+            ]);
+        }
 
         return $this->render('frontend/booking.html.twig', [
             "booking" => $booking,
@@ -86,8 +90,6 @@ class FrontendClientController extends AbstractController
                 $clientSurname,
                 $clientPhone
             );
-
-
         }
 
         if($booking->getMaxClients() && count($booking->getClients()) === $booking->getMaxClients()) {
