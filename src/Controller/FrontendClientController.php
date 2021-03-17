@@ -106,7 +106,7 @@ class FrontendClientController extends AbstractController
 
 
         $res = new JsonResponse(null, Response::HTTP_OK);
-        $cookie = Cookie::create("client", $uuid);
+        $cookie = Cookie::create("client", $uuid, strtotime("+1 month"));
         $res->headers->setCookie($cookie);
 
         return $res;
