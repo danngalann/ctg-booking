@@ -46,15 +46,33 @@
             <h5 id="duplicateText" class="red-text center-align" style="display: none">¡Ya tienes una reserva!</h5>
             <div class="row">
                 <div class="input-field col s12 l6">
-                    <input id="first_name" type="text" class="validate" {% if isBookingFull %}disabled{% endif %}>
+                    <input
+                            id="first_name"
+                            type="text"
+                            class="validate"
+                            {% if isBookingFull %}disabled{% endif %}
+                            {% if client %}value="{{ client.name }}"{% endif %}
+                    >
                     <label for="first_name">Nombre</label>
                 </div>
                 <div class="input-field col s12 l6">
-                    <input id="last_name" type="text" class="validate" {% if isBookingFull %}disabled{% endif %}>
+                    <input
+                            id="last_name"
+                            type="text"
+                            class="validate"
+                            {% if isBookingFull %}disabled{% endif %}
+                            {% if client %}value="{{ client.surname }}"{% endif %}
+                    >
                     <label for="last_name">Apellidos</label>
                 </div>
                 <div class="input-field col s12" style="margin-top: 0;">
-                    <input id="phone" type="text" class="validate" {% if isBookingFull %}disabled{% endif %}>
+                    <input
+                            id="phone"
+                            type="text"
+                            class="validate"
+                            {% if isBookingFull %}disabled{% endif %}
+                            {% if client %}value="{{ client.phone }}"{% endif %}
+                    >
                     <label for="phone">Teléfono</label>
                     <span class="helper-text">Sólo se usará para comunicar casos de COVID19</span>
                 </div>
@@ -91,36 +109,10 @@
     {{ parent() }}
     <script>
         $(document).ready(function(){
-            $('input').on('keyup', function () {
-                if(allInputsHaveData()){
-                    const clientName = $('#first_name').val();
-                    const clientSurname = $('#last_name').val();
-                    const clientPhone = $('#phone').val();
+            checkForDuplicateBooking();
 
-                    $.ajax({
-                        url: '{{ path('frontend_check_booking', {"bookingName": booking.name}) }}',
-                        type: 'POST',
-                        data: {
-                            clientName,
-                            clientSurname,
-                            clientPhone
-                        }
-                    }).done(function (isDupe) {
-                        if(isDupe) {
-                            $('#duplicateText').css("display", "block");
-                            $('#doBooking').css("display", "none");
-                            $('#deleteBooking').css("display", "inline-block");
-                        } else {
-                            $('#duplicateText').css("display", "none");
-                            $('#doBooking').css("display", "inline-block");
-                            $('#deleteBooking').css("display", "none");
-                        }
-                    })
-                } else {
-                    $('#duplicateText').css("display", "none");
-                    $('#doBooking').css("display", "inline-block");
-                    $('#deleteBooking').css("display", "none");
-                }
+            $('input').on('keyup', function () {
+                checkForDuplicateBooking();
             });
 
             // Submit
@@ -185,6 +177,38 @@
             const clientPhone = $('#phone').val() !== "";
 
             return clientName && clientSurname && clientPhone;
+        }
+
+        function checkForDuplicateBooking() {
+            if(allInputsHaveData()){
+                const clientName = $('#first_name').val();
+                const clientSurname = $('#last_name').val();
+                const clientPhone = $('#phone').val();
+
+                $.ajax({
+                    url: '{{ path('frontend_check_booking', {"bookingName": booking.name}) }}',
+                    type: 'POST',
+                    data: {
+                        clientName,
+                        clientSurname,
+                        clientPhone
+                    }
+                }).done(function (isDupe) {
+                    if(isDupe) {
+                        $('#duplicateText').css("display", "block");
+                        $('#doBooking').css("display", "none");
+                        $('#deleteBooking').css("display", "inline-block");
+                    } else {
+                        $('#duplicateText').css("display", "none");
+                        $('#doBooking').css("display", "inline-block");
+                        $('#deleteBooking').css("display", "none");
+                    }
+                })
+            } else {
+                $('#duplicateText').css("display", "none");
+                $('#doBooking').css("display", "inline-block");
+                $('#deleteBooking').css("display", "none");
+            }
         }
     </script>
 {% endblock %}

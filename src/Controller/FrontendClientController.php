@@ -6,10 +6,12 @@ use App\Entity\Booking;
 use App\Entity\Client;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Uid\Uuid;
 
 /** @Route("/reservar") */
 class FrontendClientController extends AbstractController
@@ -24,7 +26,7 @@ class FrontendClientController extends AbstractController
     /**
      * @Route("/{bookingName}", name="frontend_client", methods={"GET"})
      */
-    public function booking(string $bookingName): Response
+    public function booking(string $bookingName, Request $request): Response
     {
 
         $bookings = $this->em->getRepository(Booking::class)->nextFromToday($bookingName);
@@ -42,9 +44,13 @@ class FrontendClientController extends AbstractController
             $isBookingFull = true;
         }
 
-        // TODO: Recover client data from cookie id
+        $client = $this->em->getRepository(Client::class)->findOneBy([
+            "cookie" => $request->cookies->get("client")
+        ]);
+
         return $this->render('frontend/booking.html.twig', [
             "booking" => $booking,
+            "client" => $client,
             "isBookingFull" => $isBookingFull
         ]);
     }
@@ -81,7 +87,7 @@ class FrontendClientController extends AbstractController
                 $clientPhone
             );
 
-            $this->em->persist($client);
+
         }
 
         if($booking->getMaxClients() && count($booking->getClients()) === $booking->getMaxClients()) {
@@ -90,12 +96,20 @@ class FrontendClientController extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
         $booking->addClient($client);
-
         $this->em->persist($booking);
+
+        $uuid = Uuid::v4();
+        $client->setCookie($uuid);
+
+        $this->em->persist($client);
         $this->em->flush();
 
-        // TODO: Create and send UUID to be stored as a cookie
-        return new JsonResponse(null, Response::HTTP_OK);
+
+        $res = new JsonResponse(null, Response::HTTP_OK);
+        $cookie = Cookie::create("client", $uuid);
+        $res->headers->setCookie($cookie);
+
+        return $res;
     }
 
     /** @Route("/{bookingName}/check-duplicate", name="frontend_check_booking", methods={"POST"}) */
