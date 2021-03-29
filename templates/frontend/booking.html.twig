@@ -50,7 +50,6 @@
                             id="first_name"
                             type="text"
                             class="validate"
-                            {% if isBookingFull %}disabled{% endif %}
                             {% if client %}value="{{ client.name }}"{% endif %}
                     >
                     <label for="first_name">Nombre</label>
@@ -60,7 +59,6 @@
                             id="last_name"
                             type="text"
                             class="validate"
-                            {% if isBookingFull %}disabled{% endif %}
                             {% if client %}value="{{ client.surname }}"{% endif %}
                     >
                     <label for="last_name">Apellidos</label>
@@ -70,7 +68,6 @@
                             id="phone"
                             type="text"
                             class="validate"
-                            {% if isBookingFull %}disabled{% endif %}
                             {% if client %}value="{{ client.phone }}"{% endif %}
                     >
                     <label for="phone">Teléfono</label>
