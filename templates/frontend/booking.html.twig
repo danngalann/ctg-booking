@@ -108,9 +108,7 @@
         $(document).ready(function(){
             checkForDuplicateBooking();
 
-            $('input').on('keyup', function () {
-                checkForDuplicateBooking();
-            });
+            $('input').on('keyup', delay(checkForDuplicateBooking, 300));
 
             // Submit
             $('#doBooking').click(function () {
@@ -206,6 +204,17 @@
                 $('#doBooking').css("display", "inline-block");
                 $('#deleteBooking').css("display", "none");
             }
+        }
+
+        function delay(callback, ms) {
+            var timer = 0;
+            return function() {
+                var context = this, args = arguments;
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    callback.apply(context, args);
+                }, ms || 0);
+            };
         }
     </script>
 {% endblock %}
