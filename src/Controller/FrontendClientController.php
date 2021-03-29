@@ -118,7 +118,6 @@ class FrontendClientController extends AbstractController
     {
         $clientName = trim($request->request->get("clientName"));
         $clientSurname = trim($request->request->get("clientSurname"));
-        $clientPhone = trim($request->request->get("clientPhone"));
 
         /** @var Booking $booking */
         $booking = $this->em->getRepository(Booking::class)->nextFromToday($bookingName)[0];
@@ -126,8 +125,7 @@ class FrontendClientController extends AbstractController
         /** @var Client $client */
         $client = $this->em->getRepository(Client::class)->findOneBy([
             "name" => $clientName,
-            "surname" => $clientSurname,
-            "phone" => $clientPhone
+            "surname" => $clientSurname
         ]);
 
         if (!$client) {
