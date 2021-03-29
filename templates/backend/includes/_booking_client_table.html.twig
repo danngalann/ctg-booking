@@ -8,7 +8,7 @@
     </thead>
 
     <tbody>
-    {% for client in clients %}
+    {% for client in clients|sort((a, b) => a.name <=> b.name) %}
         <tr data-client-id="{{ client.id }}">
             <td>{{ client.name }}</td>
             <td>{{ client.surname }}</td>
