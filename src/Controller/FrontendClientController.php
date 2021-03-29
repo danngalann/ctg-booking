@@ -64,13 +64,21 @@ class FrontendClientController extends AbstractController
      */
     public function doBooking(string $bookingName, Request $request): JsonResponse
     {
-        $clientName = trim($request->request->get("clientName"));
-        $clientSurname = trim($request->request->get("clientSurname"));
+        $clientName = $this->normalizeName($request->request->get("clientName"));
+        $clientSurname = $this->normalizeName($request->request->get("clientSurname"));
         $clientPhone = trim($request->request->get("clientPhone"));
 
         if($clientName === '' || $clientSurname === '' || $clientPhone === '') {
             return new JsonResponse([
                 "message" => "¿Has rellenado todos los datos?"
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        if(!$this->isValidPhone($clientPhone)) {
+            return new JsonResponse([
+                "message" => "El número de teléfono no tiene un formato válido. 
+                Por favor introduce el número sin espacios ni guiones.
+                Ejemplos: '625985878', '+34695569863'"
             ], Response::HTTP_BAD_REQUEST);
         }
 
@@ -116,8 +124,9 @@ class FrontendClientController extends AbstractController
     /** @Route("/{bookingName}/check-duplicate", name="frontend_check_booking", methods={"POST"}) */
     public function isDupe(string $bookingName, Request $request): JsonResponse
     {
-        $clientName = trim($request->request->get("clientName"));
-        $clientSurname = trim($request->request->get("clientSurname"));
+        $clientName = $this->normalizeName($request->request->get("clientName"));
+        $clientSurname = $this->normalizeName($request->request->get("clientSurname"));
+        $clientPhone = trim($request->request->get("clientPhone"));
 
         /** @var Booking $booking */
         $booking = $this->em->getRepository(Booking::class)->nextFromToday($bookingName)[0];
@@ -125,7 +134,8 @@ class FrontendClientController extends AbstractController
         /** @var Client $client */
         $client = $this->em->getRepository(Client::class)->findOneBy([
             "name" => $clientName,
-            "surname" => $clientSurname
+            "surname" => $clientSurname,
+            "phone" => $clientPhone
         ]);
 
         if (!$client) {
@@ -167,6 +177,22 @@ class FrontendClientController extends AbstractController
         }
 
         return new JsonResponse(null, Response::HTTP_OK);
+    }
+
+    private function normalizeName(string $name): string
+    {
+        return ucwords(
+            strtolower(
+                trim(
+                    $name
+                )
+            )
+        );
+    }
+
+    private function isValidPhone(string $phone): bool
+    {
+        return preg_match("/^[\+]?\d{7,}$/", $phone);
     }
 
 
