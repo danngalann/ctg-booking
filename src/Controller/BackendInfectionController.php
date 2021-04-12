@@ -29,12 +29,21 @@ class BackendInfectionController extends AbstractController
         ]);
     }
 
-    /** @Route("/infection/{infectionId}/contacts") */
-    public function getContacts(string $infectionId): JsonResponse
+    /** @Route("/infection/{infectionId}/contacts", name="get_report") */
+    public function getReport(string $infectionId)
     {
         $infection = $this->em->getRepository(Infection::class)->find($infectionId);
-        $firstGradeContacts = $this->em->getRepository(Infection::class)->contacts($infection);
+        $contacts = $this->getContacts($infection);
 
-        return new JsonResponse($firstGradeContacts);
+        return $this->render('backend/infection/report.html.twig', [
+            'infection' => $infection,
+            'contacts' => $contacts,
+        ]);
+    }
+
+
+    public function getContacts(Infection $infection)
+    {
+        return $this->em->getRepository(Infection::class)->contacts($infection);
     }
 }

@@ -11,6 +11,7 @@
         "doctrine/doctrine-bundle": "^2.2",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.8",
+        "dompdf/dompdf": "^1.0",
         "symfony/apache-pack": "^1.0",
         "symfony/asset": "5.2.*",
         "symfony/console": "5.2.*",

@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contactos para {{ infection.client.name }}{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col s12 m7 offset-m3">
+        <h2 class="center-align">
+            Contactos para {{ infection.client.name }}
+            {% if contacts|length > 0 %}
+                ({{ contacts|length }})
+            {% endif %}
+        </h2>
+
+        {% if contacts|length > 0 %}
+            {%
+                include 'backend/infection/includes/_report_table.html.twig' with
+                {
+                    "contact": contacts
+                }
+            %}
+        {% else %}
+            <h6 class="green-text center-align">No hay contactos para este {{ infection.client.name }}</h6>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

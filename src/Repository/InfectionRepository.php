@@ -44,8 +44,8 @@ class InfectionRepository extends ServiceEntityRepository
         $twoWeeksBefore->modify("-2 week");
         $twoWeeksBefore->setTime(0,0,0);
 
-        $bookings = $this->createQueryBuilder("i")
-            ->select("contact.name, contact.surname, contact.phone")
+        return $this->createQueryBuilder("i")
+            ->select("DISTINCT contact.id, contact.name, contact.surname, contact.phone")
             ->join("i.client", "c")
             ->join("c.bookings", "b")
             ->join("b.clients", "contact")
@@ -53,11 +53,10 @@ class InfectionRepository extends ServiceEntityRepository
             ->setParameter("two_weeks", $twoWeeksBefore)
             ->andWhere("i.id = :infectionId")
             ->setParameter("infectionId", $infection->getId())
+            ->andWhere("contact != c")
             ->orderBy("b.date", "ASC")
             ->getQuery()
             ->getResult();
-
-        return $bookings;
     }
 
     /*

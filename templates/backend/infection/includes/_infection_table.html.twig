@@ -14,7 +14,12 @@
             <td>{{ infection.diagnosedOn|date('d/m/Y') }}</td>
             <td>
 {#                <a href="{{ path('edit_booking', { "infectionId":infection.id }) }}"  title="Editar"><i class="material-icons blue-text">create</i></a>#}
-                <i class="material-icons red-text deleteBtn deleteInfectionBtn" title="Eliminar">delete</i>
+                <a href="{{ path("get_report", {'infectionId':infection.id}) }}">
+                    <button class="btn btn-waves btn-small green">
+                        <i class="material-icons left">assignment</i>
+                        Ver informe
+                    </button>
+                </a>
             </td>
         </tr>
     {% endfor %}
