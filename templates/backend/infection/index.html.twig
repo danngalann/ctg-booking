@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Casos COVID19{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col s12 m7 offset-m3">
+        <h2 class="center-align">
+            Casos de COVID19
+            {% if infections|length > 0 %}
+                ({{ infections|length }})
+            {% endif %}
+        </h2>
+
+        {% if infections|length > 0 %}
+            {%
+                include 'backend/infection/includes/_infection_table.html.twig' with
+                {
+                    "infections": infections
+                }
+            %}
+        {% else %}
+            <h6 class="green-text center-align">¡Enhorabuena! No hay casos de COVID19</h6>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
