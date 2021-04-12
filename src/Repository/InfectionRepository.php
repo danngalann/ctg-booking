@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Client;
 use App\Entity\Infection;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -35,6 +37,28 @@ class InfectionRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function contacts(Infection $infection)
+    {
+        $twoWeeksBefore = $infection->getDiagnosedOn();
+        $twoWeeksBefore->modify("-2 week");
+        $twoWeeksBefore->setTime(0,0,0);
+
+        $bookings = $this->createQueryBuilder("i")
+            ->select("contact.name, contact.surname, contact.phone")
+            ->join("i.client", "c")
+            ->join("c.bookings", "b")
+            ->join("b.clients", "contact")
+            ->andWhere("b.date >= :two_weeks")
+            ->setParameter("two_weeks", $twoWeeksBefore)
+            ->andWhere("i.id = :infectionId")
+            ->setParameter("infectionId", $infection->getId())
+            ->orderBy("b.date", "ASC")
+            ->getQuery()
+            ->getResult();
+
+        return $bookings;
+    }
 
     /*
     public function findOneBySomeField($value): ?Infection
