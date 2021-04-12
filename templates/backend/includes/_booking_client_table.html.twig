@@ -3,6 +3,9 @@
     <tr>
         <th>Nombre</th>
         <th>Apellidos</th>
+        {% if is_granted("ROLE_SUPERADMIN") %}
+        <th>Teléfono</th>
+        {% endif %}
         <th></th>
     </tr>
     </thead>
@@ -12,6 +15,9 @@
         <tr data-client-id="{{ client.id }}">
             <td>{{ client.name }}</td>
             <td>{{ client.surname }}</td>
+            {% if is_granted("ROLE_SUPERADMIN") %}
+            <td>{{ client.phone }}</td>
+            {% endif %}
             <td><i class="material-icons red-text deleteBtn deleteClientBookingBtn">delete</i></td>
         </tr>
     {% endfor %}
