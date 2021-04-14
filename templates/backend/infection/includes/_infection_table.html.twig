@@ -10,7 +10,7 @@
     <tbody>
     {% for infection in infections %}
         <tr data-infection-id="{{ infection.id }}">
-            <td>{{ infection.client.name }}</td>
+            <td>{{ infection.client.name }} {{ infection.client.surname }}</td>
             <td>{{ infection.diagnosedOn|date('d/m/Y') }}</td>
             <td>
 {#                <a href="{{ path('edit_booking', { "infectionId":infection.id }) }}"  title="Editar"><i class="material-icons blue-text">create</i></a>#}
