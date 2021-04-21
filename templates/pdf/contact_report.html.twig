@@ -1,1 +1,40 @@
-<h1>Hello world</h1>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    </head>
+    <body>
+        <div class="data-container">
+            <h3 class="center-align">
+                Contactos con el infectado ({{ contacts|length }})
+            </h3>
+            <p style="margin: 0 1.3em; font-size: 1.1em">
+                Se muestran aquí los alumnos que han asistido a clase con el infectado en un período de dos semanas antes de su fecha de diagnóstico.
+                Es decir, catorce días antes de que se nos informase su infección el {{ infection_date|date("d/m/Y") }}
+            </p>
+            <table class="striped centered">
+                <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    {% if full %}
+                        <th>Teléfono</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for contact in contacts %}
+                    <tr>
+                        <td>{{ contact.name }}</td>
+                        <td>{{ contact.surname }}</td>
+                        {% if full %}
+                            <td>{{ contact.phone }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
+
+

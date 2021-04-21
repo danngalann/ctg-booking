@@ -55,13 +55,14 @@ class BackendInfectionController extends AbstractController
         $infection = $this->em->getRepository(Infection::class)->find($infectionId);
         $contacts = $this->getContacts($infection);
 
-        $filename = "informe_" . $infection->getClient()->getName();
+        $filename = "informe_" . $infection->getDiagnosedOn()->format('d_m_Y');
         $this->pdfManager->initialize($filename);
 
         $html = $this->twig->render(
             'pdf/contact_report.html.twig',
             [
                 "contacts" => $contacts,
+                "infection_date" => $infection->getDiagnosedOn(),
                 "full" => $reportType === "full"
             ]
         );
