@@ -16,7 +16,6 @@ class CronController extends AbstractController
 {
 
     private EntityManagerInterface $em;
-    private const MAX_CLIENTS = 20;
 
     public function __construct(EntityManagerInterface $em)
     {
@@ -70,8 +69,7 @@ class CronController extends AbstractController
             $name,
             $date,
             $startTime,
-            $endTime,
-            self::MAX_CLIENTS
+            $endTime
         );
     }
 
